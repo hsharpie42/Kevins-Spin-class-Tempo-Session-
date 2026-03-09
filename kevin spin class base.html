@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Threshold">
+    <title>Kevin's Threshold Workout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.5s ease;
+        padding: 20px;
+        padding-top: env(safe-area-inset-top);
+    }
+    
+    .warmup { background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%); }
+    .seated-climb { background: linear-gradient(135deg, #b9770e 0%, #f39c12 100%); }
+    .standing-climb { background: linear-gradient(135deg, #922b21 0%, #e74c3c 100%); }
+    .sprint { background: linear-gradient(135deg, #7b241c 0%, #c0392b 100%); }
+    .threshold { background: linear-gradient(135deg, #884ea0 0%, #9b59b6 100%); }
+    .recovery { background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%); }
+    .cooldown { background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%); }
+    .ready { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
+    .complete { background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%); }
+    
+    .container {
+        text-align: center;
+        color: white;
+        max-width: 700px;
+        width: 100%;
+    }
+    
+    .position-icon {
+        font-size: 5rem;
+        margin-bottom: 10px;
+    }
+    
+    .position-text {
+        font-size: 2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 5px;
+    }
+    
+    .terrain-text {
+        font-size: 1.4rem;
+        font-weight: 400;
+        opacity: 0.9;
+        margin-bottom: 20px;
+    }
+    
+    .metrics-row {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+    
+    .metric {
+        text-align: center;
+    }
+    
+    .metric-label {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        opacity: 0.7;
+        margin-bottom: 5px;
+    }
+    
+    .metric-value {
+        font-size: 2.2rem;
+        font-weight: 600;
+    }
+    
+    .gear-display {
+        background: rgba(0,0,0,0.3);
+        padding: 8px 25px;
+        border-radius: 25px;
+        display: inline-block;
+    }
+    
+    .timer {
+        font-size: 8rem;
+        font-weight: 200;
+        line-height: 1;
+        margin-bottom: 15px;
+        font-variant-numeric: tabular-nums;
+    }
+    
+    .progress-container {
+        width: 100%;
+        height: 10px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 5px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background: rgba(255,255,255,0.9);
+        border-radius: 5px;
+        transition: width 1s linear;
+    }
+    
+    .round-info {
+        font-size: 1.3rem;
+        opacity: 0.85;
+        margin-bottom: 25px;
+    }
+    
+    .coaching-cue {
+        font-size: 1.4rem;
+        font-style: italic;
+        opacity: 0.9;
+        padding: 15px 25px;
+        background: rgba(0,0,0,0.2);
+        border-radius: 10px;
+        margin-bottom: 25px;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn {
+        padding: 18px 50px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    
+    .btn-start {
+        background: #9b59b6;
+        color: white;
+    }
+    
+    .btn-start:hover {
+        background: #a569bd;
+        transform: scale(1.05);
+    }
+    
+    .btn-pause {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 2px solid rgba(255,255,255,0.5);
+    }
+    
+    .btn-reset {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255,255,255,0.5);
+        margin-left: 15px;
+    }
+    
+    .workout-summary {
+        margin-top: 30px;
+        padding: 25px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 15px;
+        text-align: left;
+    }
+    
+    .workout-summary h3 {
+        margin-bottom: 15px;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .workout-summary ul {
+        list-style: none;
+        font-size: 1rem;
+        line-height: 1.8;
+        opacity: 0.9;
+    }
+    
+    .next-up {
+        margin-top: 20px;
+        padding: 12px 20px;
+        background: rgba(0,0,0,0.2);
+        border-radius: 10px;
+        font-size: 1rem;
+    }
+    
+    .next-up span {
+        opacity: 0.7;
+    }
+    
+    .mute-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(255,255,255,0.2);
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.2rem;
+    }
+    
+    .total-time {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(0,0,0,0.3);
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: white;
+    }
+    
+    @media (max-width: 600px) {
+        .timer {
+            font-size: 5rem;
+        }
+        .position-icon {
+            font-size: 3.5rem;
+        }
+        .position-text {
+            font-size: 1.5rem;
+        }
+        .metrics-row {
+            gap: 20px;
+        }
+        .metric-value {
+            font-size: 1.6rem;
+        }
+        .btn {
+            padding: 15px 35px;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+
+
+</head>
+<body class="ready">
+    <button class="mute-btn" onclick="toggleMute()">🔊</button>
+    <div class="total-time" id="total-time" style="display: none;">Total: 00:00 / 55:00</div>
+
+
+<div class="container">
+    <div id="pre-workout">
+        <h1 style="font-size: 2.5rem; font-weight: 300; margin-bottom: 10px;">🔥 THRESHOLD</h1>
+        <p style="font-size: 1.6rem; font-weight: 600; margin-bottom: 10px;">VT2 DEVELOPMENT</p>
+        <p style="font-size: 1.2rem; opacity: 0.8; margin-bottom: 35px;">55 Minutes • 5 × 6 Min Blocks</p>
+        
+        <button class="btn btn-start" onclick="startWorkout()">START CLASS</button>
+        
+        <div class="workout-summary">
+            <h3>TODAY'S SESSION:</h3>
+            <ul>
+                <li>🔵 10 min Warm-up - progressive build</li>
+                <li>🟣 5 × 6 min THRESHOLD (HR 167-176)</li>
+                <li>🟢 5 × 2 min Recovery between blocks</li>
+                <li>🔵 5 min Cool-down</li>
+            </ul>
+            <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.8;">
+                <strong>Goal:</strong> Hold HR 167-176 for each 6-minute block. 
+                This is your lactate threshold zone - hard but sustainable.
+            </p>
+        </div>
+    </div>
+    
+    <div id="during-workout" style="display: none;">
+        <div class="position-icon" id="position-icon">🚴</div>
+        <div class="position-text" id="position-text">SEATED</div>
+        <div class="terrain-text" id="terrain-text">Flat Road</div>
+        
+        <div class="metrics-row">
+            <div class="metric">
+                <div class="metric-label">Target HR</div>
+                <div class="metric-value" id="target-hr">~140</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Cadence</div>
+                <div class="metric-value" id="target-cadence">85-95</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Gear</div>
+                <div class="metric-value gear-display" id="target-gear">10-12</div>
+            </div>
+        </div>
+        
+        <div class="timer" id="timer">10:00</div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+        </div>
+        
+        <div class="round-info" id="round-info">Warm-up</div>
+        
+        <div class="coaching-cue" id="coaching-cue">
+            "Let's build into this..."
+        </div>
+        
+        <div class="next-up" id="next-up">
+            <span>COMING UP:</span> Threshold Block 1
+        </div>
+        
+        <div style="margin-top: 25px;">
+            <button class="btn btn-pause" id="pause-btn" onclick="togglePause()">PAUSE</button>
+            <button class="btn btn-reset" onclick="resetWorkout()">RESET</button>
+        </div>
+    </div>
+    
+    <div id="post-workout" style="display: none;">
+        <div style="font-size: 5rem; margin-bottom: 20px;">💪</div>
+        <h1 style="font-size: 2.8rem; font-weight: 300; margin-bottom: 20px;">THRESHOLD COMPLETE!</h1>
+        <p style="font-size: 1.4rem; opacity: 0.9; margin-bottom: 15px;">30 minutes at threshold. Massive work, Kevin.</p>
+        <p style="font-size: 1.1rem; opacity: 0.7; margin-bottom: 35px;">Your VT2 is going to thank you for this.</p>
+        <button class="btn btn-start" onclick="resetWorkout()">GO AGAIN</button>
+    </div>
+</div>
+
+<script>
+    // THRESHOLD WORKOUT: 5 x 6 min at HR 167-176, with variety within each block
+    // Each 6-min block mixes seated threshold, standing threshold, and short surges
+    
+    const workout = [
+        // ===== WARM-UP (10 minutes) =====
+        { duration: 120, position: 'seated', terrain: 'Easy Flat', hr: '~130', cadence: '80-90', gear: '8-10', 
+          cue: "Easy start. Light resistance. Let the legs wake up.", phase: 'warmup', round: 0 },
+        { duration: 90, position: 'seated', terrain: 'Building', hr: '~140', cadence: '85-95', gear: '10-12', 
+          cue: "Pick it up slightly. Start to feel the pedals.", phase: 'warmup', round: 0 },
+        { duration: 60, position: 'seated', terrain: 'Moderate Push', hr: '~150', cadence: '80-90', gear: '12-14', 
+          cue: "Adding gear now. Getting the engine warm.", phase: 'warmup', round: 0 },
+        { duration: 60, position: 'standing', terrain: 'Easy Standing', hr: '~155', cadence: '65-75', gear: '14-16', 
+          cue: "Up out of the saddle. Hands wide. Open up the lungs.", phase: 'warmup', round: 0 },
+        { duration: 60, position: 'seated', terrain: 'Spin Out', hr: '~150', cadence: '90-100', gear: '10-12', 
+          cue: "Back down. Fast legs. Flush it out.", phase: 'warmup', round: 0 },
+        { duration: 90, position: 'seated', terrain: 'Threshold Taste', hr: '~165', cadence: '80-90', gear: '14-16', 
+          cue: "Taste of threshold. This is the feeling. Get used to it.", phase: 'warmup', round: 0 },
+        { duration: 60, position: 'seated', terrain: 'Easy', hr: '~155', cadence: '85-95', gear: '10-12', 
+          cue: "Back off. Deep breaths. First block coming.", phase: 'warmup', round: 0 },
+        { duration: 60, position: 'seated', terrain: 'Building', hr: '~160', cadence: '85-90', gear: '12-14', 
+          cue: "Here we go. Get ready to work.", phase: 'warmup', round: 0 },
+        
+        // ===== BLOCK 1 (6 minutes at threshold) =====
+        { duration: 90, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "BLOCK 1! Find 167 to 176. Seated. Steady power.", phase: 'threshold', round: 1 },
+        { duration: 60, position: 'standing', terrain: 'Standing Threshold', hr: '167-176', cadence: '65-75', gear: '16-18', 
+          cue: "Stand up. Same heart rate. Control the effort.", phase: 'threshold', round: 1 },
+        { duration: 90, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Back in the saddle. Halfway. Hold that zone.", phase: 'threshold', round: 1 },
+        { duration: 30, position: 'seated', terrain: 'Surge!', hr: '175-180', cadence: '95-105', gear: '14-16', 
+          cue: "SHORT SURGE! Pick it up!", phase: 'threshold', round: 1 },
+        { duration: 90, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Back to threshold. Settle. Final 90 seconds.", phase: 'threshold', round: 1 },
+        // Recovery 1
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~155', cadence: '85-95', gear: '8-10', 
+          cue: "Recovery! Drop the gear. Easy spin.", phase: 'recovery', round: 1 },
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~150', cadence: '85-95', gear: '8-10', 
+          cue: "One down, four to go. Breathe.", phase: 'recovery', round: 1 },
+        
+        // ===== BLOCK 2 =====
+        { duration: 60, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "BLOCK 2! Back to threshold. Find the zone.", phase: 'threshold', round: 2 },
+        { duration: 60, position: 'standing', terrain: 'Standing Threshold', hr: '167-176', cadence: '65-75', gear: '16-18', 
+          cue: "Standing. Heavy gear. Same heart rate target.", phase: 'threshold', round: 2 },
+        { duration: 60, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Sit. Keep it smooth. You know this feeling.", phase: 'threshold', round: 2 },
+        { duration: 60, position: 'standing', terrain: 'Standing Push', hr: '167-176', cadence: '60-70', gear: '17-19', 
+          cue: "Up again! Heavier this time. Push through it.", phase: 'threshold', round: 2 },
+        { duration: 30, position: 'seated', terrain: 'Surge!', hr: '175-180', cadence: '95-105', gear: '14-16', 
+          cue: "SURGE! Quick legs!", phase: 'threshold', round: 2 },
+        { duration: 90, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Settle back. Hold threshold. Nearly there.", phase: 'threshold', round: 2 },
+        // Recovery 2
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~155', cadence: '85-95', gear: '8-10', 
+          cue: "Good! Recovery. Let the legs spin.", phase: 'recovery', round: 2 },
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~150', cadence: '85-95', gear: '8-10', 
+          cue: "Two down. You're nearly halfway.", phase: 'recovery', round: 2 },
+        
+        // ===== BLOCK 3 =====
+        { duration: 90, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "BLOCK 3! Halfway point. This is where it counts.", phase: 'threshold', round: 3 },
+        { duration: 45, position: 'standing', terrain: 'Standing Threshold', hr: '167-176', cadence: '65-75', gear: '16-18', 
+          cue: "Stand and deliver. Control is everything.", phase: 'threshold', round: 3 },
+        { duration: 45, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Sit. Reset. Find that rhythm.", phase: 'threshold', round: 3 },
+        { duration: 45, position: 'standing', terrain: 'Standing Threshold', hr: '167-176', cadence: '65-75', gear: '16-18', 
+          cue: "Up! Short standing effort.", phase: 'threshold', round: 3 },
+        { duration: 45, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Down. Hold the power.", phase: 'threshold', round: 3 },
+        { duration: 30, position: 'seated', terrain: 'Surge!', hr: '175-180', cadence: '95-105', gear: '14-16', 
+          cue: "SURGE!", phase: 'threshold', round: 3 },
+        { duration: 60, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Last minute. Don't fade now!", phase: 'threshold', round: 3 },
+        // Recovery 3
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~155', cadence: '85-95', gear: '8-10', 
+          cue: "HALFWAY DONE! Great work. Recover.", phase: 'recovery', round: 3 },
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~150', cadence: '85-95', gear: '8-10', 
+          cue: "Two more hard blocks. You've got this.", phase: 'recovery', round: 3 },
+        
+        // ===== BLOCK 4 =====
+        { duration: 60, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "BLOCK 4! Second half. Dig in!", phase: 'threshold', round: 4 },
+        { duration: 60, position: 'standing', terrain: 'Standing Threshold', hr: '167-176', cadence: '65-75', gear: '16-18', 
+          cue: "Standing. This is where you're different.", phase: 'threshold', round: 4 },
+        { duration: 30, position: 'seated', terrain: 'Surge!', hr: '175-180', cadence: '95-105', gear: '14-16', 
+          cue: "SURGE! Quick burst!", phase: 'threshold', round: 4 },
+        { duration: 90, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Back to threshold. Smooth power. Relax the shoulders.", phase: 'threshold', round: 4 },
+        { duration: 60, position: 'standing', terrain: 'Standing Grind', hr: '167-176', cadence: '60-70', gear: '17-19', 
+          cue: "Final standing. Heavy. Grind it out.", phase: 'threshold', round: 4 },
+        { duration: 60, position: 'seated', terrain: 'Seated Finish', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Sit and finish strong. One block left after this!", phase: 'threshold', round: 4 },
+        // Recovery 4
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~155', cadence: '85-95', gear: '8-10', 
+          cue: "One more block! That's all. Recover well.", phase: 'recovery', round: 4 },
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~150', cadence: '85-95', gear: '8-10', 
+          cue: "Last block coming. Make it count.", phase: 'recovery', round: 4 },
+        
+        // ===== BLOCK 5 (FINAL) =====
+        { duration: 90, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "FINAL BLOCK! Last 6 minutes. Leave nothing behind!", phase: 'threshold', round: 5 },
+        { duration: 60, position: 'standing', terrain: 'Standing Threshold', hr: '167-176', cadence: '65-75', gear: '16-18', 
+          cue: "Stand! You know what's left. Give it everything!", phase: 'threshold', round: 5 },
+        { duration: 60, position: 'seated', terrain: 'Seated Threshold', hr: '167-176', cadence: '80-90', gear: '15-17', 
+          cue: "Sit. Three minutes left. This is your moment.", phase: 'threshold', round: 5 },
+        { duration: 30, position: 'seated', terrain: 'Surge!', hr: '175-180', cadence: '100-110', gear: '14-16', 
+          cue: "FINAL SURGE! Everything you've got!", phase: 'threshold', round: 5 },
+        { duration: 60, position: 'standing', terrain: 'Standing Finish', hr: '167-176', cadence: '65-75', gear: '16-18', 
+          cue: "STANDING! Last 90 seconds! THIS IS IT!", phase: 'threshold', round: 5 },
+        { duration: 60, position: 'seated', terrain: 'Glory Ride', hr: '167-176', cadence: '85-95', gear: '15-17', 
+          cue: "FINAL MINUTE! Sit and HOLD! You're a machine!", phase: 'threshold', round: 5 },
+        // Recovery 5
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~155', cadence: '85-95', gear: '8-10', 
+          cue: "DONE! All 5 blocks complete. Incredible.", phase: 'recovery', round: 5 },
+        { duration: 60, position: 'seated', terrain: 'Easy Spin', hr: '~145', cadence: '80-90', gear: '8-10', 
+          cue: "30 minutes at threshold. That's elite work.", phase: 'recovery', round: 5 },
+        
+        // ===== COOL-DOWN (5 minutes) =====
+        { duration: 90, position: 'seated', terrain: 'Easy Spin', hr: '~135', cadence: '75-85', gear: '6-8', 
+          cue: "Cool down. Let the heart rate drop naturally.", phase: 'cooldown', round: 0 },
+        { duration: 90, position: 'seated', terrain: 'Very Easy', hr: '~125', cadence: '70-80', gear: '4-6', 
+          cue: "Slower now. Gentle spin. Great session.", phase: 'cooldown', round: 0 },
+        { duration: 120, position: 'seated', terrain: 'Recovery Spin', hr: '~115', cadence: '60-70', gear: '3-5', 
+          cue: "Final cool down. Outstanding work today, Kevin. You've earned this.", phase: 'cooldown', round: 0 },
+    ];
+    
+    let currentSegmentIndex = 0;
+    let timeRemaining = 0;
+    let totalWorkoutTime = workout.reduce((sum, s) => sum + s.duration, 0);
+    let elapsedTotal = 0;
+    let interval = null;
+    let isPaused = false;
+    let isMuted = false;
+    
+    let audioContext = null;
+    
+    function initAudio() {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    function playBeep(frequency, duration, type = 'sine') {
+        if (isMuted || !audioContext) return;
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+        gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + duration);
+    }
+    
+    function playStandBeep() {
+        playBeep(523, 0.15); setTimeout(() => playBeep(659, 0.15), 150); setTimeout(() => playBeep(784, 0.3), 300);
+    }
+    
+    function playSitBeep() {
+        playBeep(659, 0.15); setTimeout(() => playBeep(523, 0.3), 150);
+    }
+    
+    function playSurgeBeep() {
+        for(let i = 0; i < 3; i++) { setTimeout(() => playBeep(880, 0.1), i * 100); }
+    }
+    
+    function playThresholdBeep() {
+        playBeep(440, 0.2); setTimeout(() => playBeep(554, 0.2), 200); setTimeout(() => playBeep(659, 0.4), 400);
+    }
+    
+    function playRecoveryBeep() {
+        playBeep(659, 0.2); setTimeout(() => playBeep(523, 0.2), 200); setTimeout(() => playBeep(392, 0.4), 400);
+    }
+    
+    function playCountdownBeep() {
+        playBeep(660, 0.1);
+    }
+    
+    function speak(text) {
+        if (isMuted) return;
+        speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.0;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        speechSynthesis.speak(utterance);
+    }
+    
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    function getPhaseClass(segment) {
+        if (segment.phase === 'warmup' || segment.phase === 'cooldown') return segment.phase;
+        if (segment.phase === 'recovery') return 'recovery';
+        if (segment.terrain.includes('Surge')) return 'sprint';
+        if (segment.position === 'standing') return 'standing-climb';
+        return 'threshold';
+    }
+    
+    function updateDisplay() {
+        const segment = workout[currentSegmentIndex];
+        
+        document.getElementById('position-icon').textContent = segment.position === 'standing' ? '🧍' : '🚴';
+        document.getElementById('position-text').textContent = segment.position.toUpperCase();
+        document.getElementById('terrain-text').textContent = segment.terrain;
+        document.getElementById('target-hr').textContent = segment.hr;
+        document.getElementById('target-cadence').textContent = segment.cadence;
+        document.getElementById('target-gear').textContent = segment.gear;
+        document.getElementById('timer').textContent = formatTime(timeRemaining);
+        document.getElementById('coaching-cue').textContent = `"${segment.cue}"`;
+        
+        const segmentProgress = ((segment.duration - timeRemaining) / segment.duration) * 100;
+        document.getElementById('progress-bar').style.width = `${segmentProgress}%`;
+        
+        if (segment.round > 0) {
+            document.getElementById('round-info').textContent = `Block ${segment.round} of 5 • ${segment.phase === 'threshold' ? 'THRESHOLD' : 'RECOVERY'}`;
+        } else {
+            document.getElementById('round-info').textContent = segment.phase === 'warmup' ? 'WARM-UP' : 'COOL-DOWN';
+        }
+        
+        if (currentSegmentIndex < workout.length - 1) {
+            const next = workout[currentSegmentIndex + 1];
+            document.getElementById('next-up').innerHTML = `<span>COMING UP:</span> ${next.position === 'standing' ? '🧍' : '🚴'} ${next.terrain}`;
+            document.getElementById('next-up').style.display = 'block';
+        } else {
+            document.getElementById('next-up').style.display = 'none';
+        }
+        
+        document.body.className = getPhaseClass(segment);
+        
+        document.getElementById('total-time').textContent = `Total: ${formatTime(elapsedTotal)} / ${formatTime(totalWorkoutTime)}`;
+    }
+    
+    function nextSegment() {
+        currentSegmentIndex++;
+        
+        if (currentSegmentIndex >= workout.length) {
+            clearInterval(interval);
+            document.getElementById('during-workout').style.display = 'none';
+            document.getElementById('post-workout').style.display = 'block';
+            document.getElementById('total-time').style.display = 'none';
+            document.body.className = 'complete';
+            speak('Workout complete! 30 minutes at threshold. Massive work Kevin!');
+            return;
+        }
+        
+        const segment = workout[currentSegmentIndex];
+        const prevSegment = workout[currentSegmentIndex - 1];
+        timeRemaining = segment.duration;
+        
+        // Announce changes
+        if (segment.phase === 'threshold' && prevSegment.phase !== 'threshold') {
+            // Starting new threshold block
+            playThresholdBeep();
+            setTimeout(() => speak(segment.cue), 500);
+        } else if (segment.phase === 'recovery' && prevSegment.phase !== 'recovery') {
+            // Starting recovery
+            playRecoveryBeep();
+            setTimeout(() => speak(segment.cue), 400);
+        } else if (segment.position !== prevSegment.position) {
+            if (segment.position === 'standing') {
+                playStandBeep();
+                setTimeout(() => speak(segment.cue), 400);
+            } else {
+                playSitBeep();
+                setTimeout(() => speak(segment.cue), 300);
+            }
+        } else if (segment.terrain.includes('Surge')) {
+            playSurgeBeep();
+            setTimeout(() => speak(segment.cue), 300);
+        } else if (segment.round !== prevSegment.round && segment.round > 0) {
+            playThresholdBeep();
+            setTimeout(() => speak(segment.cue), 500);
+        }
+        
+        updateDisplay();
+    }
+    
+    function tick() {
+        if (isPaused) return;
+        
+        timeRemaining--;
+        elapsedTotal++;
+        
+        if (timeRemaining <= 5 && timeRemaining > 0) {
+            playCountdownBeep();
+        }
+        
+        // Warning before position change
+        if (timeRemaining === 5 && currentSegmentIndex < workout.length - 1) {
+            const next = workout[currentSegmentIndex + 1];
+            const current = workout[currentSegmentIndex];
+            if (next.position !== current.position) {
+                if (next.position === 'standing') {
+                    speak('Get ready to stand');
+                } else {
+                    speak('Back to the saddle');
+                }
+            } else if (next.terrain.includes('Surge')) {
+                speak('Surge coming');
+            } else if (next.phase === 'threshold' && current.phase === 'recovery') {
+                speak('Threshold coming. Get ready.');
+            }
+        }
+        
+        // Halfway cue during threshold blocks
+        const segment = workout[currentSegmentIndex];
+        if (segment.phase === 'threshold' && segment.duration > 60) {
+            if (timeRemaining === Math.floor(segment.duration / 2)) {
+                speak('Halfway. Hold that zone.');
+            }
+        }
+        
+        if (timeRemaining <= 0) {
+            nextSegment();
+        } else {
+            updateDisplay();
+        }
+    }
+    
+    function startWorkout() {
+        initAudio();
+        
+        document.getElementById('pre-workout').style.display = 'none';
+        document.getElementById('during-workout').style.display = 'block';
+        document.getElementById('total-time').style.display = 'block';
+        
+        currentSegmentIndex = 0;
+        timeRemaining = workout[0].duration;
+        elapsedTotal = 0;
+        
+        updateDisplay();
+        
+        speak("Let's go Kevin. Threshold session. 10 minute warm-up then 5 blocks of 6 minutes at threshold. Easy start.");
+        
+        interval = setInterval(tick, 1000);
+    }
+    
+    function togglePause() {
+        isPaused = !isPaused;
+        document.getElementById('pause-btn').textContent = isPaused ? 'RESUME' : 'PAUSE';
+        if (isPaused) speak('Paused'); else speak('Resuming');
+    }
+    
+    function resetWorkout() {
+        clearInterval(interval);
+        speechSynthesis.cancel();
+        isPaused = false;
+        currentSegmentIndex = 0;
+        document.getElementById('pre-workout').style.display = 'block';
+        document.getElementById('during-workout').style.display = 'none';
+        document.getElementById('post-workout').style.display = 'none';
+        document.getElementById('total-time').style.display = 'none';
+        document.getElementById('pause-btn').textContent = 'PAUSE';
+        document.body.className = 'ready';
+    }
+    
+    function toggleMute() {
+        isMuted = !isMuted;
+        document.querySelector('.mute-btn').textContent = isMuted ? '🔇' : '🔊';
+        if (isMuted) speechSynthesis.cancel();
+    }
+</script>
+
+
+</body>
+</html>

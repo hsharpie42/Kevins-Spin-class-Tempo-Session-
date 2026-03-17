@@ -272,7 +272,7 @@
             <div class="workout-summary">
                 <h3>TODAY'S SESSION:</h3>
                 <ul>
-                    <li>🔵 5 min Warm-up &ndash; progressive build</li>
+                    <li>🔵 2 min Warm-up &ndash; easy seated spin</li>
                     <li>🟠 6 &times; 4 min HARD blocks (HR 153-162)</li>
                     <li>🟢 6 &times; 2 min Recovery between blocks</li>
                     <li>🔵 5 min Cool-down</li>
@@ -341,17 +341,9 @@
     // Total: 5 warm-up + (6 x 4 hard + 6 x 2 recovery) + 5 cool-down = ~51 min
 
     const workout = [
-        // ===== WARM-UP (5 minutes) =====
-        { duration: 90, position: 'seated', terrain: 'Flat Road', hr: '~130', cadence: '85-95', gear: '8-10',
+        // ===== WARM-UP (2 minutes) =====
+        { duration: 120, position: 'seated', terrain: 'Flat Road', hr: '~130', cadence: '85-95', gear: '8-10',
           cue: "Easy start. Light resistance. Let the legs wake up.", phase: 'warmup', round: 0 },
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '10-12',
-          cue: "Building now. Start to feel the pedals.", phase: 'warmup', round: 0 },
-        { duration: 60, position: 'seated', terrain: 'Seated Climb', hr: '~148', cadence: '75-85', gear: '12-14',
-          cue: "Adding gear. Getting the engine warm.", phase: 'warmup', round: 0 },
-        { duration: 45, position: 'standing', terrain: 'Standing Climb', hr: '~150', cadence: '65-75', gear: '14-16',
-          cue: "Up out of the saddle. Open up the lungs.", phase: 'warmup', round: 0 },
-        { duration: 45, position: 'seated', terrain: 'Seated Climb', hr: '~153', cadence: '80-90', gear: '13-15',
-          cue: "Taste of tempo. This is the feeling. Get used to it.", phase: 'warmup', round: 0 },
 
         // ===== BLOCK 1 / SET 1 (4 minutes) =====
         // Seated Climb 16, Standing 20, Seated 18, Standing 22, Seated Sprint 16, Seated Climb 18, Standing 22
@@ -738,7 +730,7 @@
 
         updateDisplay();
 
-        speak("Let's go Kevin. Tempo session. 5 minute warm-up then 6 blocks of 4 minutes at tempo. Easy start.");
+        speak("Let's go Kevin. Tempo session. 2 minute warm-up then 6 blocks of 4 minutes at tempo. Easy start.");
 
         interval = setInterval(tick, 1000);
     }

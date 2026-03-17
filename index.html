@@ -32,7 +32,7 @@
         .standing-climb { background: linear-gradient(135deg, #922b21 0%, #e74c3c 100%); }
         .standing-attack { background: linear-gradient(135deg, #7b241c 0%, #c0392b 100%); }
         .sprint { background: linear-gradient(135deg, #7b241c 0%, #c0392b 100%); }
-        .jumps { background: linear-gradient(135deg, #e67e22 0%, #f1c40f 100%); }
+
         .victory-climb { background: linear-gradient(135deg, #d4ac0d 0%, #f0b90b 50%, #d4a017 100%); }
         .recovery { background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%); }
         .cooldown { background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%); }
@@ -279,7 +279,7 @@
                 </ul>
                 <p style="margin-top: 15px; font-size: 0.95rem; opacity: 0.8;">
                     <strong>Goal:</strong> Hold HR 153-162 through each 4-minute block.
-                    Seated climbs, standing climbs, sprints, and jumps. Let's ride!
+                    Seated climbs, standing climbs, sprints, and standing attacks. Let's ride!
                 </p>
             </div>
         </div>
@@ -337,8 +337,8 @@
 
 <script>
     // TEMPO WORKOUT: 6 x 4 min HARD at HR 153-162, with 2 min recovery between each block
-    // Each 4-min block mixes seated climb, standing climb, sprints, jumps
-    // Total: 5 warm-up + (6 x 4 hard + 6 x 2 recovery) + 5 cool-down = 46 min hard/rec + 10 = ~51 min
+    // Each 4-min block mixes seated climb, standing climb, sprints
+    // Total: 5 warm-up + (6 x 4 hard + 6 x 2 recovery) + 5 cool-down = ~51 min
 
     const workout = [
         // ===== WARM-UP (5 minutes) =====
@@ -353,112 +353,122 @@
         { duration: 45, position: 'seated', terrain: 'Seated Climb', hr: '~153', cadence: '80-90', gear: '13-15',
           cue: "Taste of tempo. This is the feeling. Get used to it.", phase: 'warmup', round: 0 },
 
-        // ===== BLOCK 1 (4 minutes) =====
-        { duration: 60, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
+        // ===== BLOCK 1 / SET 1 (4 minutes) =====
+        // Seated Climb 16, Standing 20, Seated 18, Standing 22, Seated Sprint 16, Seated Climb 18, Standing 22
+        { duration: 35, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '16',
           cue: "BLOCK 1 OF 6! Find 153 to 162. Seated climb. Steady power.", phase: 'hard', round: 1 },
-        { duration: 60, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '16-18',
+        { duration: 35, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '20',
           cue: "Out of the saddle! Heavy gear, control the effort.", phase: 'hard', round: 1 },
-        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '12-14',
+        { duration: 30, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
+          cue: "Back in the saddle. Hold the power seated.", phase: 'hard', round: 1 },
+        { duration: 35, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '22',
+          cue: "Stand and push! Big gear, big effort!", phase: 'hard', round: 1 },
+        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '16',
           cue: "SPRINT! Fast legs, drop the gear, go go go!", phase: 'hard', round: 1 },
-        { duration: 45, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
+        { duration: 40, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
           cue: "Back to the climb. Settle the breathing.", phase: 'hard', round: 1 },
-        { duration: 45, position: 'standing', terrain: 'Standing Attack', hr: '155-162', cadence: '65-75', gear: '16-18',
-          cue: "Standing attack! Drive through the pedals!", phase: 'hard', round: 1 },
+        { duration: 35, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '22',
+          cue: "Standing to close! Drive through the pedals!", phase: 'hard', round: 1 },
         // Recovery 1
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '14',
           cue: "Recovery! Drop the gear. Easy spin.", phase: 'recovery', round: 1 },
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '14',
           cue: "One down, five to go. Breathe deep.", phase: 'recovery', round: 1 },
 
-        // ===== BLOCK 2 (4 minutes) =====
-        { duration: 50, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
+        // ===== BLOCK 2 / SET 2 (4 minutes) =====
+        // Seated Climb 18, Standing 20, Seated 18, Sprint 16, Standing 22, Seated Climb 18
+        { duration: 50, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
           cue: "BLOCK 2 OF 6! Back at it. Find the zone.", phase: 'hard', round: 2 },
-        { duration: 50, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '16-18',
+        { duration: 50, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '20',
           cue: "Stand and climb! You know the drill.", phase: 'hard', round: 2 },
-        { duration: 30, position: 'seated', terrain: 'Jumps', hr: '155-165', cadence: '80-90', gear: '14-16',
-          cue: "JUMPS! Seated, standing, seated, standing. Quick transitions!", phase: 'hard', round: 2 },
-        { duration: 30, position: 'standing', terrain: 'Jumps', hr: '155-165', cadence: '70-80', gear: '14-16',
-          cue: "Keep those jumps going! Light hands, heavy legs!", phase: 'hard', round: 2 },
-        { duration: 40, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '12-14',
-          cue: "SPRINT! Everything you've got for 40 seconds!", phase: 'hard', round: 2 },
-        { duration: 40, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
+        { duration: 30, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
+          cue: "Seated effort. Keep the legs turning over.", phase: 'hard', round: 2 },
+        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '16',
+          cue: "SPRINT! Everything you've got for 30 seconds!", phase: 'hard', round: 2 },
+        { duration: 40, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '22',
+          cue: "Out of the saddle! Heavy gear, hold it strong!", phase: 'hard', round: 2 },
+        { duration: 40, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
           cue: "Finish strong on the climb. Hold that power.", phase: 'hard', round: 2 },
         // Recovery 2
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '13',
           cue: "Great work! Let it go. Easy pedal stroke.", phase: 'recovery', round: 2 },
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '13',
           cue: "Two down. You're finding your rhythm.", phase: 'recovery', round: 2 },
 
-        // ===== BLOCK 3 (4 minutes) =====
-        { duration: 45, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
+        // ===== BLOCK 3 / SET 3 (4 minutes) =====
+        // Seated Climb 18, Standing 20, Sprint 16, Seated 18, Standing 22, Standing Attack 22
+        { duration: 45, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
           cue: "BLOCK 3 OF 6! Halfway marker. This is where it counts.", phase: 'hard', round: 3 },
-        { duration: 45, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '16-18',
+        { duration: 45, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '20',
           cue: "Up! Climb with purpose. Every pedal stroke matters.", phase: 'hard', round: 3 },
-        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '12-14',
+        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '16',
           cue: "SPRINT! Light it up!", phase: 'hard', round: 3 },
-        { duration: 30, position: 'seated', terrain: 'Jumps', hr: '155-165', cadence: '80-90', gear: '14-16',
-          cue: "JUMPS! Pop up, sit down. Explosive!", phase: 'hard', round: 3 },
-        { duration: 30, position: 'standing', terrain: 'Jumps', hr: '155-165', cadence: '70-80', gear: '14-16',
-          cue: "Stay with the jumps! Core tight!", phase: 'hard', round: 3 },
-        { duration: 60, position: 'standing', terrain: 'Standing Attack', hr: '155-162', cadence: '65-75', gear: '16-18',
+        { duration: 30, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
+          cue: "Seated effort. Keep the pressure on.", phase: 'hard', round: 3 },
+        { duration: 30, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '22',
+          cue: "Stand and grind! Heavy gear, strong legs!", phase: 'hard', round: 3 },
+        { duration: 60, position: 'standing', terrain: 'Standing Attack', hr: '155-162', cadence: '65-75', gear: '22',
           cue: "Standing attack to close it! Don't back off!", phase: 'hard', round: 3 },
         // Recovery 3
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '13',
           cue: "HALFWAY DONE! Excellent work. Let it recover.", phase: 'recovery', round: 3 },
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '13',
           cue: "Three more blocks. You've absolutely got this.", phase: 'recovery', round: 3 },
 
-        // ===== BLOCK 4 (4 minutes) =====
-        { duration: 50, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
+        // ===== BLOCK 4 / SET 4 (4 minutes) =====
+        // Seated Climb 18, Sprint 16, Standing 20, Seated 18, Seated 18, Standing Attack 22
+        { duration: 50, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
           cue: "BLOCK 4 OF 6! Second half. Dig deep, Kevin!", phase: 'hard', round: 4 },
-        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '12-14',
+        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '16',
           cue: "SPRINT! Show me what you're made of!", phase: 'hard', round: 4 },
-        { duration: 50, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '16-18',
+        { duration: 50, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '20',
           cue: "Standing climb. This is where champions are built.", phase: 'hard', round: 4 },
-        { duration: 30, position: 'seated', terrain: 'Jumps', hr: '155-165', cadence: '80-90', gear: '14-16',
-          cue: "JUMPS! Quick up, quick down!", phase: 'hard', round: 4 },
-        { duration: 30, position: 'standing', terrain: 'Jumps', hr: '155-165', cadence: '70-80', gear: '14-16',
-          cue: "Keep jumping! Feel the power!", phase: 'hard', round: 4 },
-        { duration: 50, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
-          cue: "Finish this block seated. Strong and smooth.", phase: 'hard', round: 4 },
+        { duration: 30, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
+          cue: "Seated effort. Smooth and controlled.", phase: 'hard', round: 4 },
+        { duration: 30, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
+          cue: "Keep it going seated. Relentless effort.", phase: 'hard', round: 4 },
+        { duration: 50, position: 'standing', terrain: 'Standing Attack', hr: '155-162', cadence: '65-75', gear: '22',
+          cue: "Standing attack to finish! Strong and powerful!", phase: 'hard', round: 4 },
         // Recovery 4
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '13',
           cue: "Two more! You're in the home stretch. Recover well.", phase: 'recovery', round: 4 },
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '13',
           cue: "Next block coming. Make every second count.", phase: 'recovery', round: 4 },
 
-        // ===== BLOCK 5 (4 minutes) =====
-        { duration: 45, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
+        // ===== BLOCK 5 / SET 5 (4 minutes) =====
+        // Seated Climb 18, Standing Attack 22, Sprint 16, Seated 18, Standing 20, Standing Attack 22
+        { duration: 45, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
           cue: "BLOCK 5 OF 6! Penultimate round. No letting up!", phase: 'hard', round: 5 },
-        { duration: 45, position: 'standing', terrain: 'Standing Attack', hr: '155-162', cadence: '65-75', gear: '16-18',
+        { duration: 45, position: 'standing', terrain: 'Standing Attack', hr: '155-162', cadence: '65-75', gear: '22',
           cue: "Attack! You're stronger than you think!", phase: 'hard', round: 5 },
-        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '12-14',
+        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '16',
           cue: "SPRINT! Leave nothing in the tank!", phase: 'hard', round: 5 },
-        { duration: 40, position: 'seated', terrain: 'Jumps', hr: '155-165', cadence: '80-90', gear: '14-16',
-          cue: "JUMPS! Explosive power! Up down up down!", phase: 'hard', round: 5 },
-        { duration: 40, position: 'standing', terrain: 'Jumps', hr: '155-165', cadence: '70-80', gear: '14-16',
-          cue: "Keep those jumps sharp! Nearly there!", phase: 'hard', round: 5 },
-        { duration: 40, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '16-18',
-          cue: "Standing to close! One more block after this!", phase: 'hard', round: 5 },
+        { duration: 40, position: 'seated', terrain: 'Seated Climb', hr: '153-162', cadence: '75-85', gear: '18',
+          cue: "Seated effort. Keep the pressure on!", phase: 'hard', round: 5 },
+        { duration: 40, position: 'standing', terrain: 'Standing Climb', hr: '153-162', cadence: '60-70', gear: '20',
+          cue: "Stand and climb! Nearly there!", phase: 'hard', round: 5 },
+        { duration: 40, position: 'standing', terrain: 'Standing Attack', hr: '155-162', cadence: '65-75', gear: '22',
+          cue: "Standing attack to close! One more block after this!", phase: 'hard', round: 5 },
         // Recovery 5
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '13',
           cue: "ONE MORE BLOCK! That's all. Get your breath.", phase: 'recovery', round: 5 },
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~135', cadence: '85-95', gear: '13',
           cue: "Final block next. The victory climb. Make it legendary.", phase: 'recovery', round: 5 },
 
-        // ===== BLOCK 6 - VICTORY CLIMB (4 minutes) =====
-        { duration: 60, position: 'seated', terrain: 'Victory Climb', hr: '153-162', cadence: '75-85', gear: '14-16',
+        // ===== BLOCK 6 / SET 6 - VICTORY CLIMB (4 minutes) =====
+        // Seated Victory Climb 20, Standing Victory Climb 23, Sprint 16, Standing Victory Climb 22
+        { duration: 60, position: 'seated', terrain: 'Victory Climb', hr: '153-162', cadence: '75-85', gear: '20',
           cue: "FINAL BLOCK! VICTORY CLIMB! This is YOUR moment, Kevin!", phase: 'hard', round: 6 },
-        { duration: 60, position: 'standing', terrain: 'Victory Climb', hr: '153-162', cadence: '60-70', gear: '16-18',
+        { duration: 60, position: 'standing', terrain: 'Victory Climb', hr: '153-162', cadence: '60-70', gear: '23',
           cue: "STAND AND CONQUER! Everything you've got! All of it!", phase: 'hard', round: 6 },
-        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '12-14',
+        { duration: 30, position: 'seated', terrain: 'Sprint!', hr: '158-165', cadence: '100-110', gear: '16',
           cue: "FINAL SPRINT! Empty the tank! NOW!", phase: 'hard', round: 6 },
-        { duration: 90, position: 'standing', terrain: 'Victory Climb', hr: '153-162', cadence: '65-75', gear: '16-18',
+        { duration: 90, position: 'standing', terrain: 'Victory Climb', hr: '153-162', cadence: '65-75', gear: '22',
           cue: "VICTORY CLIMB TO THE FINISH! Stand tall! You are UNSTOPPABLE!", phase: 'hard', round: 6 },
         // Recovery 6
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~140', cadence: '85-95', gear: '13',
           cue: "DONE! All 6 blocks complete. Incredible work!", phase: 'recovery', round: 6 },
-        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~130', cadence: '80-90', gear: '8-10',
+        { duration: 60, position: 'seated', terrain: 'Flat Road', hr: '~130', cadence: '80-90', gear: '13',
           cue: "24 minutes of hard tempo. That's serious fitness.", phase: 'recovery', round: 6 },
 
         // ===== COOL-DOWN (5 minutes) =====
@@ -553,7 +563,7 @@
         if (segment.phase === 'recovery') return 'recovery';
         if (segment.terrain === 'Victory Climb') return 'victory-climb';
         if (segment.terrain === 'Sprint!') return 'sprint';
-        if (segment.terrain === 'Jumps') return 'jumps';
+
         if (segment.terrain === 'Standing Attack') return 'standing-attack';
         if (segment.terrain === 'Standing Climb') return 'standing-climb';
         if (segment.terrain === 'Seated Climb') return 'seated-climb';
@@ -650,9 +660,6 @@
         } else if (segment.terrain === 'Sprint!') {
             playSprintBeep();
             setTimeout(() => speak(segment.terrain + '. ' + segment.cue), 300);
-        } else if (segment.terrain === 'Jumps') {
-            playSprintBeep();
-            setTimeout(() => speak('Jumps! ' + segment.cue), 300);
         } else if (segment.position !== prevSegment.position) {
             if (segment.position === 'standing') {
                 playStandBeep();
@@ -691,8 +698,6 @@
                 }
             } else if (next.terrain === 'Sprint!') {
                 speak('Sprint coming!');
-            } else if (next.terrain === 'Jumps') {
-                speak('Jumps coming! Get ready!');
             } else if (next.phase === 'hard' && current.phase === 'recovery') {
                 if (next.round === 6) {
                     speak('Victory climb coming. Give it everything!');
